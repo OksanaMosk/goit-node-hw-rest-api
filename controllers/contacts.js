@@ -1,5 +1,6 @@
 const { HttpError } = require("../helpers");
 const { ctrlWrapper } = require("../helpers");
+const mongoose = require("mongoose");
 
 const { Contact } = require("../models/contact");
 
@@ -11,7 +12,9 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   const { id } = req.params;
 
-  const result = await Contact.findOne({ _id: id });
+  const validObjectId = new mongoose.Types.ObjectId(id);
+  const result = await Contact.findById(validObjectId);
+
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -25,8 +28,8 @@ const add = async (req, res, next) => {
 
 const remove = async (req, res) => {
   const { id } = req.params;
-
   const result = await Contact.findByIdAndDelete(id);
+
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -36,7 +39,11 @@ const remove = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
 
-  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  const validObjectId = new mongoose.Types.ObjectId(id);
+
+  const result = await Contact.findByIdAndUpdate(validObjectId, req.body, {
+    new: true,
+  });
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -44,9 +51,9 @@ const update = async (req, res) => {
 };
 
 const updateStatusContact = async (req, res) => {
-  const { contactId } = req.params;
-
-  const result = await Contact.findByIdAndUpdate(contactId, req.body, {
+  const { id } = req.params;
+  const validObjectId = new mongoose.Types.ObjectId(id);
+  const result = await Contact.findByIdAndUpdate(validObjectId, req.body, {
     new: true,
   });
   if (!result) {
