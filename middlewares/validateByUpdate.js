@@ -1,5 +1,3 @@
-// const { HttpError } = require("../helpers");
-
 const validateByUpdate = (schema) => {
   const func = (req, res, next) => {
     const { error } = schema.validate(req.body);
