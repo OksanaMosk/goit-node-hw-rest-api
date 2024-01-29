@@ -2,7 +2,7 @@ const { HttpError } = require("../helpers");
 const { ctrlWrapper } = require("../helpers");
 const bcryptjs = require("bcryptjs");
 const { User } = require("../models/user");
-
+const gravatar = require("gravatar");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
@@ -14,8 +14,12 @@ const register = async (req, res, next) => {
   }
 
   const hashPassword = await bcryptjs.hash(password, 10);
-
-  const newUser = await User.create({ ...req.body, password: hashPassword });
+  const avatarURL = gravatar.url(email);
+  const newUser = await User.create({
+    ...req.body,
+    password: hashPassword,
+    avatarURL,
+  });
   res.status(201).json({
     email: newUser.email,
   });
