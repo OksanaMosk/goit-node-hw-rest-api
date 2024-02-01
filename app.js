@@ -1,12 +1,38 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-require("dotenv").config();
+
 const contactsRouter = require("./routes/api/contacts");
 const authRouter = require("./routes/api/auth");
 const userRouter = require("./routes/api/user");
+// const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+//
+// const transport = nodemailer.createTransport({
+//   host: "sandbox.smtp.mailtrap.io",
+//   port: 2525,
+//   auth: {
+//     user: process.env.MAILTRAP_USER,
+//     pass: process.env.MAILTRAP_PASSWORD,
+//   },
+// });
+
+// const message = {
+//   from: "ksenjap124@gmail.com",
+//   to: "ksenjap124@meta.ua",
+//   subject: "Hello ",
+//   html: "<b>Hello world</b>",
+//   text: "Node.js",
+// };
+// transport
+//   .sendMail(message)
+//   .then((response) => console.info(response))
+//   .catch((error) => console.error(error));
+//
 
 const app = express();
+require("dotenv").config();
 
 app.use("/avatars", express.static("public/avatars"));
 
